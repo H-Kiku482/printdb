@@ -3,9 +3,9 @@ package cmd
 // help message
 
 func HelpText() string {
-	return `Usage:  printdbtables [OPTION]... DATABASE
-   or:  printdbtables [OPTION]... DATABASE -m FILE.md -c false
-   or:  printdbtables [OPTION]... DATABASE -t FILE.txt
+	return `Usage:  printdbtables DATABASE
+   or:  printtables -u root -p DATABASE -m FILE.md
+   or:  printtables DATABASE -t FILE.txt
 
 Options:
     --help, -h          Print this message and exit.

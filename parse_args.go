@@ -48,23 +48,24 @@ func (ca *cmdArgs) setMarkdown(v string) {
 }
 
 func (ca *cmdArgs) checkOptionalValue(args []string, i int) (*string, error) {
-	value := ""
-	if i+1 < len(args) {
+	var value string
+
+	// if there is next args
+	if i < len(args)-1 {
 		value = args[i+1]
-		if value[0:1] == "-" {
+		if (value[0:1] == "\"") && (value[:utf8.RuneCountInString(value)] == "\"") {
+			r := value[1 : utf8.RuneCountInString(value)-1]
+			return &r, nil
+		} else if (value[0:1] == "'") && (value[:utf8.RuneCountInString(value)] == "'") {
+			r := value[1 : utf8.RuneCountInString(value)-1]
+			return &r, nil
+		} else if value[0:1] == "-" {
 			return nil, errors.New("invalid variable \"" + value + "\"")
+		} else {
+			return &value, nil
 		}
 	} else {
 		return nil, errors.New("invalid variable \"" + value + "\"")
-	}
-	if (value[0:1] == "\"") && (value[:utf8.RuneCountInString(value)] == "\"") {
-		r := value[1 : utf8.RuneCountInString(value)-1]
-		return &r, nil
-	} else if (value[0:1] == "'") && (value[:utf8.RuneCountInString(value)] == "'") {
-		r := value[1 : utf8.RuneCountInString(value)-1]
-		return &r, nil
-	} else {
-		return &value, nil
 	}
 }
 
@@ -98,7 +99,9 @@ func parseAndSetCmdArgs(args []string) (*cmdArgs, error) {
 				ca.setUser(*str)
 			} else if argv[i][1:] == "p" {
 				str, _ := ca.checkOptionalValue(argv, i)
-				if *str == "true" {
+				if str == nil {
+					ca.setPassword(true)
+				} else if *str == "true" {
 					i++
 					ca.setPassword(true)
 				} else if *str == "false" {
@@ -124,6 +127,7 @@ func parseAndSetCmdArgs(args []string) (*cmdArgs, error) {
 			} else if argv[i][1:] == "c" {
 				str, _ := ca.checkOptionalValue(argv, i)
 				if str == nil {
+					i++
 					ca.setCat(true)
 				} else if *str == "true" {
 					i++
@@ -162,6 +166,7 @@ func parseAndSetCmdArgs(args []string) (*cmdArgs, error) {
 				} else if argv[i][2:] == "password" {
 					str, _ := ca.checkOptionalValue(argv, i)
 					if str == nil {
+						i++
 						ca.setPassword(true)
 					} else if *str == "true" {
 						i++
@@ -170,7 +175,7 @@ func parseAndSetCmdArgs(args []string) (*cmdArgs, error) {
 						i++
 						ca.setPassword(false)
 					} else {
-						return ca, errors.New("invalid variable \"" + *str + "\"")
+						ca.setPassword(true)
 					}
 				} else if argv[i][2:] == "host" {
 					str, err := ca.checkOptionalValue(argv, i)
