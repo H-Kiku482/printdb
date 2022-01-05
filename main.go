@@ -46,9 +46,7 @@ func main() {
 		fmt.Print("Enter password:")
 		inputPassword, err := terminal.ReadPassword(0)
 		password = string(inputPassword)
-
-		fmt.Println(inputPassword)
-		fmt.Println(password)
+		fmt.Println("")
 
 		if err != nil {
 			fmt.Println(err)
