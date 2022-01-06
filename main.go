@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	args, err := parseAndSetCmdArgs(os.Args)
+	args, err := cmd.ParseAndSetCmdArgs(os.Args)
 
 	if err != nil {
 		fmt.Println(err)

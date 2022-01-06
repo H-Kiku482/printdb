@@ -1,4 +1,4 @@
-package main
+package cmd
 
 // parce command line arguments
 
@@ -69,7 +69,7 @@ func (ca *cmdArgs) checkOptionalValue(args []string, i int) (*string, error) {
 	}
 }
 
-func parseAndSetCmdArgs(args []string) (*cmdArgs, error) {
+func ParseAndSetCmdArgs(args []string) (*cmdArgs, error) {
 	argc := len(args) - 1
 	argv := args[1:]
 
