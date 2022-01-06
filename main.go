@@ -44,13 +44,13 @@ func main() {
 		}()
 
 		fmt.Print("Enter password:")
-		inputPassword, err := terminal.ReadPassword(0)
+		inputPassword, err := terminal.ReadPassword(int(os.Stdin.Fd()))
 		password = string(inputPassword)
 		fmt.Println("")
 
 		if err != nil {
 			fmt.Println(err)
-			return
+			os.Exit(1)
 		}
 	}
 
