@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	args, err := parseAndSetCmdArgs(os.Args)
+	args, err := cmd.ParseAndSetCmdArgs(os.Args)
 
 	if err != nil {
 		fmt.Println(err)
@@ -44,13 +44,13 @@ func main() {
 		}()
 
 		fmt.Print("Enter password:")
-		inputPassword, err := terminal.ReadPassword(0)
+		inputPassword, err := terminal.ReadPassword(int(os.Stdin.Fd()))
 		password = string(inputPassword)
 		fmt.Println("")
 
 		if err != nil {
 			fmt.Println(err)
-			return
+			os.Exit(1)
 		}
 	}
 

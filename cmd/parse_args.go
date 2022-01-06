@@ -1,4 +1,4 @@
-package main
+package cmd
 
 // parce command line arguments
 
@@ -69,7 +69,7 @@ func (ca *cmdArgs) checkOptionalValue(args []string, i int) (*string, error) {
 	}
 }
 
-func parseAndSetCmdArgs(args []string) (*cmdArgs, error) {
+func ParseAndSetCmdArgs(args []string) (*cmdArgs, error) {
 	argc := len(args) - 1
 	argv := args[1:]
 
@@ -87,17 +87,17 @@ func parseAndSetCmdArgs(args []string) (*cmdArgs, error) {
 
 	for i := 0; i < argc; i++ {
 		if argv[i][0:1] == "-" {
-			if argv[i][1:] == "h" {
+			if argv[i][1:] == "h" || argv[i][1:] == "-help" {
 				ca.setHelp(true)
 				return ca, nil
-			} else if argv[i][1:] == "u" {
+			} else if argv[i][1:] == "u" || argv[i][1:] == "-user" {
 				str, err := ca.checkOptionalValue(argv, i)
 				if err != nil {
 					return ca, err
 				}
 				i++
 				ca.setUser(*str)
-			} else if argv[i][1:] == "p" {
+			} else if argv[i][1:] == "p" || argv[i][1:] == "-password" {
 				str, _ := ca.checkOptionalValue(argv, i)
 				if str == nil {
 					ca.setPassword(true)
@@ -110,21 +110,21 @@ func parseAndSetCmdArgs(args []string) (*cmdArgs, error) {
 				} else {
 					ca.setPassword(true)
 				}
-			} else if argv[i][1:] == "H" {
+			} else if argv[i][1:] == "H" || argv[i][1:] == "-host" {
 				str, err := ca.checkOptionalValue(argv, i)
 				if err != nil {
 					return ca, err
 				}
 				i++
 				ca.setHost(*str)
-			} else if argv[i][1:] == "P" {
+			} else if argv[i][1:] == "P" || argv[i][1:] == "-port" {
 				str, err := ca.checkOptionalValue(argv, i)
 				if err != nil {
 					return ca, err
 				}
 				i++
 				ca.setPort(*str)
-			} else if argv[i][1:] == "c" {
+			} else if argv[i][1:] == "c" || argv[i][1:] == "-cat" {
 				str, _ := ca.checkOptionalValue(argv, i)
 				if str == nil {
 					i++
@@ -138,89 +138,20 @@ func parseAndSetCmdArgs(args []string) (*cmdArgs, error) {
 				} else {
 					return ca, errors.New("invalid variable \"" + *str + "\"")
 				}
-			} else if argv[i][1:] == "t" {
+			} else if argv[i][1:] == "t" || argv[i][1:] == "-text" {
 				str, err := ca.checkOptionalValue(argv, i)
 				if err != nil {
 					return ca, err
 				}
 				i++
 				ca.setText(*str)
-			} else if argv[i][1:] == "m" {
+			} else if argv[i][1:] == "m" || argv[i][1:] == "-markdown" {
 				str, err := ca.checkOptionalValue(argv, i)
 				if err != nil {
 					return ca, err
 				}
 				i++
 				ca.setMarkdown(*str)
-			} else if argv[i][1:2] == "-" {
-				if argv[i][2:] == "help" {
-					ca.setHelp(true)
-					return ca, nil
-				} else if argv[i][2:] == "user" {
-					str, err := ca.checkOptionalValue(argv, i)
-					if err != nil {
-						return ca, err
-					}
-					i++
-					ca.setUser(*str)
-				} else if argv[i][2:] == "password" {
-					str, _ := ca.checkOptionalValue(argv, i)
-					if str == nil {
-						i++
-						ca.setPassword(true)
-					} else if *str == "true" {
-						i++
-						ca.setPassword(true)
-					} else if *str == "false" {
-						i++
-						ca.setPassword(false)
-					} else {
-						ca.setPassword(true)
-					}
-				} else if argv[i][2:] == "host" {
-					str, err := ca.checkOptionalValue(argv, i)
-					if err != nil {
-						return ca, err
-					}
-					i++
-					ca.setHost(*str)
-				} else if argv[i][2:] == "port" {
-					str, err := ca.checkOptionalValue(argv, i)
-					if err != nil {
-						return ca, err
-					}
-					i++
-					ca.setPort(*str)
-				} else if argv[i][2:] == "cat" {
-					str, _ := ca.checkOptionalValue(argv, i)
-					if str == nil {
-						ca.setCat(true)
-					} else if *str == "true" {
-						i++
-						ca.setCat(true)
-					} else if *str == "false" {
-						i++
-						ca.setCat(false)
-					} else {
-						return ca, errors.New("invalid variable \"" + *str + "\"")
-					}
-				} else if argv[i][2:] == "text" {
-					str, err := ca.checkOptionalValue(argv, i)
-					if err != nil {
-						return ca, err
-					}
-					i++
-					ca.setText(*str)
-				} else if argv[i][2:] == "markdown" {
-					str, err := ca.checkOptionalValue(argv, i)
-					if err != nil {
-						return ca, err
-					}
-					i++
-					ca.setMarkdown(*str)
-				} else {
-					return ca, errors.New("unknown option \"" + argv[i] + "\"")
-				}
 			} else {
 				return ca, errors.New("unknown option \"" + argv[i] + "\"")
 			}
