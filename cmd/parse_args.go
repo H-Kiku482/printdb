@@ -19,38 +19,9 @@ type cmdArgs struct {
 	Markdown string
 }
 
-func (ca *cmdArgs) setHelp(v bool) {
-	ca.Help = v
-}
-func (ca *cmdArgs) setUser(v string) {
-	ca.User = v
-}
-func (ca *cmdArgs) setPassword(v bool) {
-	ca.Password = v
-}
-func (ca *cmdArgs) setHost(v string) {
-	ca.Host = v
-}
-func (ca *cmdArgs) setPort(v string) {
-	ca.Port = v
-}
-func (ca *cmdArgs) setDatabase(v string) {
-	ca.Database = v
-}
-func (ca *cmdArgs) setCat(v bool) {
-	ca.Cat = v
-}
-func (ca *cmdArgs) setText(v string) {
-	ca.Text = v
-}
-func (ca *cmdArgs) setMarkdown(v string) {
-	ca.Markdown = v
-}
-
 func (ca *cmdArgs) checkOptionalValue(args []string, i int) (*string, error) {
 	var value string
 
-	// if there is next args
 	if i < len(args)-1 {
 		value = args[i+1]
 		if (value[0:1] == "\"") && (value[:utf8.RuneCountInString(value)] == "\"") {
@@ -88,7 +59,7 @@ func ParseAndSetCmdArgs(args []string) (*cmdArgs, error) {
 	for i := 0; i < argc; i++ {
 		if argv[i][0:1] == "-" {
 			if argv[i][1:] == "h" || argv[i][1:] == "-help" {
-				ca.setHelp(true)
+				ca.Help = true
 				return ca, nil
 			} else if argv[i][1:] == "u" || argv[i][1:] == "-user" {
 				str, err := ca.checkOptionalValue(argv, i)
@@ -96,19 +67,18 @@ func ParseAndSetCmdArgs(args []string) (*cmdArgs, error) {
 					return ca, err
 				}
 				i++
-				ca.setUser(*str)
+				ca.User = *str
 			} else if argv[i][1:] == "p" || argv[i][1:] == "-password" {
 				str, _ := ca.checkOptionalValue(argv, i)
 				if str == nil {
-					ca.setPassword(true)
 				} else if *str == "true" {
 					i++
-					ca.setPassword(true)
+					ca.Password = true
 				} else if *str == "false" {
 					i++
-					ca.setPassword(false)
+					ca.Password = false
 				} else {
-					ca.setPassword(true)
+					ca.Password = true
 				}
 			} else if argv[i][1:] == "H" || argv[i][1:] == "-host" {
 				str, err := ca.checkOptionalValue(argv, i)
@@ -116,25 +86,25 @@ func ParseAndSetCmdArgs(args []string) (*cmdArgs, error) {
 					return ca, err
 				}
 				i++
-				ca.setHost(*str)
+				ca.Host = *str
 			} else if argv[i][1:] == "P" || argv[i][1:] == "-port" {
 				str, err := ca.checkOptionalValue(argv, i)
 				if err != nil {
 					return ca, err
 				}
 				i++
-				ca.setPort(*str)
+				ca.Port = *str
 			} else if argv[i][1:] == "c" || argv[i][1:] == "-cat" {
 				str, _ := ca.checkOptionalValue(argv, i)
 				if str == nil {
 					i++
-					ca.setCat(true)
+					ca.Cat = true
 				} else if *str == "true" {
 					i++
-					ca.setCat(true)
+					ca.Cat = true
 				} else if *str == "false" {
 					i++
-					ca.setCat(false)
+					ca.Cat = false
 				} else {
 					return ca, errors.New("invalid variable \"" + *str + "\"")
 				}
@@ -144,14 +114,14 @@ func ParseAndSetCmdArgs(args []string) (*cmdArgs, error) {
 					return ca, err
 				}
 				i++
-				ca.setText(*str)
+				ca.Text = *str
 			} else if argv[i][1:] == "m" || argv[i][1:] == "-markdown" {
 				str, err := ca.checkOptionalValue(argv, i)
 				if err != nil {
 					return ca, err
 				}
 				i++
-				ca.setMarkdown(*str)
+				ca.Markdown = *str
 			} else {
 				return ca, errors.New("unknown option \"" + argv[i] + "\"")
 			}
