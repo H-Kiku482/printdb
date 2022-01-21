@@ -22,7 +22,7 @@ func (pt *PrintTables) getOneTableListAsString(tableName string, tableColumns *s
 			return nil, errors.New("failed to connect to database")
 		}
 		if tableColumnInfo.defaultValue.String == "" {
-			tableColumnInfo.defaultValue.String = "NULL"
+			tableColumnInfo.defaultValue.String = "UNSET"
 		}
 
 		r.columnsCount = r.columnsCount + 1
