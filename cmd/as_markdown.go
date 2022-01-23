@@ -48,7 +48,7 @@ func (pt *PrintTables) PrintAsMarkdown(filepath string) error {
 				return errors.New("")
 			}
 			if tableColumnInfo.defaultValue.String == "" {
-				tableColumnInfo.defaultValue.String = "UNSET"
+				tableColumnInfo.defaultValue.String = "NULL"
 			}
 			f.WriteString("| " + tableColumnInfo.field.String + " | " + tableColumnInfo.dataType.String + " | " + tableColumnInfo.null.String + " | " + tableColumnInfo.key.String + " | " + tableColumnInfo.defaultValue.String + " | " + tableColumnInfo.extra.String + " |\n")
 		}
