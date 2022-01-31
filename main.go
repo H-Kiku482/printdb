@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"printtables/cmd"
 	"syscall"
 
-	"golang.org/x/crypto/ssh/terminal"
+	"github.com/H-Kiku482/printtables/cmd"
+	"golang.org/x/term"
 )
 
 func main() {
@@ -18,19 +18,19 @@ func main() {
 		os.Exit(1)
 	}
 
-	if args.Help == true {
+	if args.Help {
 		fmt.Println(cmd.HelpText())
 		os.Exit(0)
 	}
 
 	var password = ""
 
-	if args.Password == true {
+	if args.Password {
 		cancelChannel := make(chan os.Signal)
 		signal.Notify(cancelChannel, os.Interrupt)
 		defer signal.Stop(cancelChannel)
 
-		terminalState, err := terminal.GetState(int(syscall.Stdin))
+		terminalState, err := term.GetState(int(syscall.Stdin))
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -38,13 +38,13 @@ func main() {
 
 		go func() {
 			<-cancelChannel
-			terminal.Restore(int(syscall.Stdin), terminalState)
+			term.Restore(int(syscall.Stdin), terminalState)
 			fmt.Println("")
 			os.Exit(1)
 		}()
 
 		fmt.Print("Enter password:")
-		inputPassword, err := terminal.ReadPassword(int(os.Stdin.Fd()))
+		inputPassword, err := term.ReadPassword(int(os.Stdin.Fd()))
 		password = string(inputPassword)
 		fmt.Println("")
 
@@ -61,7 +61,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if args.Cat == true {
+	if args.Cat {
 		if err := printTables.CatTables(); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
