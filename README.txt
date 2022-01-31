@@ -1,13 +1,17 @@
-Usage:  printtables DATABASE
-   or:  printtables -u root -p DATABASE -m FILE.md
-   or:  printtables DATABASE -t FILE.txt
+Usage:  printtables [OPTIONS...] DATABASE
+    or:  printtables -u USER -p -m FILE DATABASE
 
 Options:
-    --help, -h          Print this message and exit.
-    --user, -u          Select MySQL user. Default is root.
-    --password, -p      Use password for printing.
-    --host, -H          Select this option when the MySQL host is not 'localhost'.
-    --port, -P          Select this option when the MySQL port is not '3306'.
-    --markdown, -m      Print as markdown file.
-    --text, -t          Print as text file.
-    --cat, -c           Display on terminal.
+    -H string
+          Select MySQL Host. (default "127.0.0.1")
+    -P string
+          Select MySQL port. (default "3306")
+    -c    Prinit tables on terminal. (default true)
+    -h    Print this message and exit.
+    -m string
+          Print tables on *.txt file.
+    -p    Use password for printing.
+    -t string
+          Print tables on *.md file.
+    -u string
+          Select MySQL user. (default "root")
