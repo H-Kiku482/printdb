@@ -28,8 +28,8 @@ func ParseAndSetCmdArgs(args []string) (*cmdArgs, error) {
 	host := flag.String("H", "127.0.0.1", "Select MySQL Host.")
 	port := flag.String("P", "3306", "Select MySQL port.")
 	cat := flag.Bool("c", true, "Prinit tables on terminal.")
-	text := flag.String("t", "", "Print tables on *.md file.")
-	markdown := flag.String("m", "", "Print tables on *.txt file.")
+	text := flag.String("t", "", "Print tables on *.txt file.")
+	markdown := flag.String("m", "", "Print tables on *.md file.")
 
 	flag.Parse()
 
