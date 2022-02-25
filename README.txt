@@ -9,9 +9,9 @@ Options:
     -c    Prinit tables on terminal. (default true)
     -h    Print this message and exit.
     -m string
-          Print tables on *.txt file.
+          Print tables on *.md file.
     -p    Use password for printing.
     -t string
-          Print tables on *.md file.
+          Print tables on *.txt file.
     -u string
           Select MySQL user. (default "root")
