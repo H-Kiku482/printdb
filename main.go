@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"unicode/utf8"
 
 	"github.com/H-Kiku482/printtables/cmd"
 	"golang.org/x/term"
@@ -69,6 +70,11 @@ func main() {
 	}
 
 	if args.Markdown != "" {
+		len := utf8.RuneCountInString(args.Markdown)
+		if args.Markdown[len-3:] != ".md" && args.Markdown[len-3:] != ".MD" {
+			args.Markdown += ".md"
+		}
+
 		if err := printTables.PrintAsMarkdown(args.Markdown); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
