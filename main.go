@@ -19,11 +19,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	if args.Help {
-		fmt.Println(cmd.HelpText())
-		os.Exit(0)
-	}
-
 	var password = ""
 
 	if args.Password {
