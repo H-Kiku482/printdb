@@ -1,5 +1,3 @@
-printtables
-printtables.exe
+/target
 
-.DS_Store
-.vscode
+/docs.local
