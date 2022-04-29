@@ -2,7 +2,7 @@ use clap::{Arg, Command};
 use rpassword::prompt_password;
 
 const APP_NAME: &str = "printdb";
-const VERSION: &str = "2.0.0";
+const VERSION: &str = "2.0.1";
 const AUTHOR: &str = "H-Kiku482 <h.kikuchi482@gmail.com>";
 const ABOUT: &str = "Print your MySQL database";
 
@@ -27,7 +27,7 @@ impl Config {
             .about(ABOUT)
             .arg(
                 Arg::new("host")
-                    .help("select target host")
+                    .help("Connect to host.")
                     .short('h')
                     .long("host")
                     .default_value("127.0.0.1")
@@ -35,7 +35,7 @@ impl Config {
             )
             .arg(
                 Arg::new("port")
-                    .help("select target port")
+                    .help("Port number to connect to server.")
                     .short('P')
                     .long("port")
                     .default_value("3306")
@@ -43,7 +43,7 @@ impl Config {
             )
             .arg(
                 Arg::new("user")
-                    .help("input database user")
+                    .help("User for login.")
                     .short('u')
                     .long("user")
                     .default_value("root")
@@ -51,13 +51,13 @@ impl Config {
             )
             .arg(
                 Arg::new("password")
-                    .help("input user password")
+                    .help("Password to use connecting to server.")
                     .short('p')
                     .long("password"),
             )
             .arg(
                 Arg::new("text file path")
-                    .help("print as plane text")
+                    .help("Output to a given file as plain text.")
                     .short('t')
                     .long("text")
                     .default_value("")
@@ -65,7 +65,7 @@ impl Config {
             )
             .arg(
                 Arg::new("markdown file path")
-                    .help("print as markdown file format")
+                    .help("Output to a given file as markdown file format.")
                     .short('m')
                     .long("markdown")
                     .default_value("")
@@ -73,14 +73,14 @@ impl Config {
             )
             .arg(
                 Arg::new("overwrite")
-                    .help("overwriting text, markdown file")
+                    .help("Overwriting text and markdown files")
                     .short('o')
                     .long("overwrite"),
             )
-            .arg(Arg::new("cli").help("print on CLI").short('c').long("cli"))
+            .arg(Arg::new("cli").help("Print on CLI").short('c').long("cli"))
             .arg(
                 Arg::new("database")
-                    .help("input the database name")
+                    .help("Target database name to printing")
                     .required(true),
             );
 
@@ -115,12 +115,16 @@ impl Config {
 
         let overwrite = parsed_args.is_present("overwrite");
 
-        let cli = parsed_args.is_present("cli");
+        let mut cli = parsed_args.is_present("cli");
 
         let database = match parsed_args.value_of("database") {
             Some(v) => v,
             None => panic!(),
         };
+
+        if text == "" && markdown == "" {
+            cli = true;
+        }
 
         Config {
             host: String::from(host),
